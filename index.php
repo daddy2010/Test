@@ -11,10 +11,13 @@ and open the template in the editor.
     </head>
     <body>
         <?php
-        $ch = curl_init('google.com');
-        curl_setopt($ch, CURLOPT_HEADER, TRUE );
-        $res = curl_exec($ch);
+        $ch = curl_init('my-hit.org');
+        $fp = fopen("test.txt", "w");
+        curl_setopt($ch, CURLOPT_FILE, $fp);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        $a = curl_exec($ch);
         curl_close($ch);
+        fclose($fp);
         ?>
     </body>
 </html>
