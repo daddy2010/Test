@@ -6,18 +6,14 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <meta charset="windows-1251">
+        <meta charset="UTF-8">
         <title></title>
     </head>
     <body>
-        <?php
-        $ch = curl_init('my-hit.org');
-        $fp = fopen("test.txt", "w");
-        curl_setopt($ch, CURLOPT_FILE, $fp);
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        $a = curl_exec($ch);
-        curl_close($ch);
-        fclose($fp);
+        <a href="register.php">Зарегистрироватса</a>
+        <br>
+        <a href="sing.php">Войти</a>
+        <?php      
         ?>
     </body>
 </html>
