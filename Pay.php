@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title></title>
+        <title>Pay</title>
     </head>
     <body>
         <a href="Privat24.php">Главная</a>
@@ -10,7 +10,7 @@
         </form>
 <?php
 require 'DataBase.php';
-require 'Base.php';
+require 'autodb.php';
 $pay = filter_input(INPUT_POST, 'pay');
 $b = new Base();
 $get = $b->getId();
@@ -21,7 +21,7 @@ $passwordPay = "Win7sooG3X4j133uZjZ7712D69YtfCUS";
 $data = '
                     <oper>cmt</oper>
                     <wait>90</wait>
-                    <test>1</test>
+                    <test>0</test>
                     <payment id="1234567">
                         <prop name="b_card_or_acc" value="4627081718568608" />
                         <prop name="amt" value="'.$payuser.'" />
@@ -39,7 +39,7 @@ $xml = '<?xml version="1.0" encoding="UTF-8"?>
                 <data>
                     <oper>cmt</oper>
                     <wait>90</wait>
-                    <test>1</test>
+                    <test>0</test>
                     <payment id="1234567">
                         <prop name="b_card_or_acc" value="4627081718568608" />
                         <prop name="amt" value="'.$payuser.'" />
@@ -48,8 +48,8 @@ $xml = '<?xml version="1.0" encoding="UTF-8"?>
                     </payment>
                 </data> 
             </request>';
-echo $xml;
-$ch = curl_init("api.privatbank.ua/p24api/pay_pb");
+//echo $xml;
+$ch = curl_init(" https://api.privatbank.ua/p24api/pay_pb");
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_HTTPHEADER, Array("Content-Type: text/xml"));
     curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -59,15 +59,16 @@ $ch = curl_init("api.privatbank.ua/p24api/pay_pb");
 $ress = curl_exec($ch);
 var_dump($ress);
 curl_close($ch);
-$priv24 = new SimpleXMLElement($ress);
-//var_dump($priv24);
-if ((string) $priv24->response->data['state'] === '1') {
-    $time = time();
-    $countPay = $pays + $payuser;
-    $db->exec("INSERT INTO userhistory(time,count)VALUES('$time','$payuser')");
-    $db->exec("INSERT INTO user(score)VALUES('$countPay')");
-    echo 'Платеж успешно прошел';
-}
+echo $ress;
+$xml = simplexml_load_string($ress);
+//$priv24 = new SimpleXMLElement($ress);
+//if ((string) $priv24->response->data['state'] === '1') {
+//    $time = time();
+//    $countPay = $pays + $payuser;
+//    $db->exec("INSERT INTO userhistory(id,time,count)VALUES('$get','$time','$payuser')");
+//    $db->exec("INSERT INTO user(score)VALUES('$countPay')");
+//    echo 'Платеж успешно прошел';
+//}
 }
 ?>
 </body>

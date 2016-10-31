@@ -10,7 +10,7 @@
         </form>
 <?php
 require 'DataBase.php';
-require 'Base.php';
+require 'autodb.php';
 $st = filter_input(INPUT_POST, 'st');
 $dataTime = time();
 $b = new Base();
@@ -24,7 +24,7 @@ $passwordPay = "Win7sooG3X4j133uZjZ7712D69YtfCUS";
 $data = '
                     <oper>cmt</oper>
                     <wait>90</wait>
-                    <test>1</test>
+                    <test>0</test>
                     <payment id="1234567">
                         <prop name="b_card_or_acc" value="4627081718568608" />
                         <prop name="amt" value="'.$payuser.'" />
@@ -42,7 +42,7 @@ $xml = '<?xml version="1.0" encoding="UTF-8"?>
                 <data>
                     <oper>cmt</oper>
                     <wait>90</wait>
-                    <test>1</test>
+                    <test>0</test>
                     <payment id="1234567">
                         <prop name="b_card_or_acc" value="4627081718568608" />
                         <prop name="amt" value="'.$payuser.'" />
@@ -51,7 +51,7 @@ $xml = '<?xml version="1.0" encoding="UTF-8"?>
                     </payment>
                 </data>
             </request>';
-$ch = curl_init("api.privatbank.ua/p24api/pay_pb");
+$ch = curl_init("https://api.privatbank.ua/p24api/pay_pb");
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_HTTPHEADER, Array("Content-Type: text/xml"));
     curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -65,7 +65,7 @@ if((string)$xml->response->data->payment['state'] === 1){
     echo 'Платеж прошел успешно';
     $count = $db->query("SELECT * FROM userhistory WHERE id=$get");
     $payCount = $count - $payuser;
-    $db->exec("INSERT INTO userhistory(time,count)VALUE('$dataTime','$payuser')");
+    $db->exec("INSERT INTO userhistory(id,time,count)VALUE('$id','$dataTime','$payuser')");
     $db->exec("INSERT INTO user(score)VALUE('$payCount')");
   
 }

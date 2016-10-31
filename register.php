@@ -18,7 +18,7 @@
         require 'DataBase.php';
         $button = filter_input(INPUT_POST,'button');
         if(isset($button)){
-        $user = filter_input(INPUT_POST, 'user', FILTER_SANITIZE_SPECIAL_CHARS);
+        $user = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_SPECIAL_CHARS);
         $pass = filter_input(INPUT_POST, 'pass', FILTER_SANITIZE_SPECIAL_CHARS);
         $db->exec("INSERT INTO user(name,pass) VALUES ('$user','$pass')");
             header("Location: sing.php"); 
